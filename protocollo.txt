@@ -1,0 +1,24 @@
+Connessione:
+	Mittente:
+		string comando: NC;
+		string nome_utente;
+		int porta: x;
+	
+	Destinatario:
+		string comando: RC;
+		bool ack: false (rifiuta la connessione) / true (accetta la connessione);
+		string nome_utente;
+
+Comunicazione:
+	Mittente:
+		string comando: H (colpo);
+		string coordinate: a-1 (colonna-riga);
+
+	Destinatario:
+		string comando: RH (risposta colpo);
+		int risultato: -1 (mancato) / 0 (colpito) / 1 (affondato);
+
+Disconnessione:
+	Mittente:
+		string comando: D;
+		bool end: false (il giocatore ha chiuso il gioco) / true (la partita è finita);
