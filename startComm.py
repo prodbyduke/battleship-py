@@ -1,14 +1,21 @@
 # se vogliamo iniziare la comunicazione dovremmo mandare un pacchetto con "NC"
-import packetSender
-import packetReceiver
+from packetSender import send
+from packetReceiver import listenJustOnce
+from packetReceiver import startListening
 
-msg = "" 
-msg += "NC, player1, 6969" #NC per la connessione, il nostro nome utente e la porta do0ve ascoltiamo così che l'altro possa salvarla
+def startComunication():
+    msg = "NC, player1, 6969" #NC per la connessione, il nostro nome utente e la porta do0ve ascoltiamo così che l'altro possa salvarla
 
-if packetSender.send(msg, "127.0.0.1", 20001): #dobbiamo avere l'ip del destinatario e la porta su cui manderemo i messaggi
-    print("success")
-else: 
-    print("not success :(")
+    if send(msg, "127.0.0.1", 6969): #dobbiamo avere l'ip del destinatario e la porta su cui manderemo i messaggi
+        returnedMsg = listenJustOnce()
+        splittedMsg = returnedMsg.split(", ")
+        if(splittedMsg[0] == "RC"):
+            if(splittedMsg[1] == "true"):
+                print("inizia la comunicazione")
+        print("success")
+    else: 
+        print("not success :(")
 
+startComunication()
 # quando invio il pacchetto aspetto la risposta per capire se vuole connettersi o no
-packetReceiver.receiveConnection() # il metodo ancora non esiste però lo farò successivamente
+#packetReceiver.receiveConnection() # il metodo ancora non esiste però lo farò successivamente
