@@ -1,8 +1,11 @@
 import random
 from threading import currentThread
+from packetSender import send
 from player import player
 import PySimpleGUI as sg
 import numpy as np
+import comunicazione as comm
+
 
 ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
             'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -14,6 +17,10 @@ MISSED_COLOR = 'grey'
 HIT_COLOR = 'IndianRed3'
 DROWNED_COLOR = 'IndianRed4'
 SHIP_COLOR = 'DarkGreen'
+SENDPORT = 6969
+LISTENPORT = 12345
+LOCALIP = "127.0.0.1" 
+BUFFERSIZE = 1024
 
 SHIPS = {
     "CARRIER": 5,
@@ -29,6 +36,7 @@ current_gamemode = "Idle"
 current_ship = None
 current_direction = 0
 occupied_points = []
+busy = False #variabile per capire se siamo già in gioco
 
 
 def connect(IP):
@@ -36,22 +44,29 @@ def connect(IP):
     return None
 
 
-def shoot(window: sg.Window, event):
-    # Send shot info to opponent
-    # THIS METHOD IS STILL NOT DEVELOPED
-    result = random.randint(-1, 1)  # -1: missed | 0: hit | 1: drowned
-    match result:
-        case -1:
+def shoot(window: sg.Window, event):    
+    # Send shot info to opponent    
+    # -1: missed | 0: hit | 1: drowned
+    if(comm.sendAttack("a-1")):
+        result = shotResponse() # Receive result from shotResponse()
+        if result == -1:
             color = MISSED_COLOR
-        case 0:
-            color = HIT_COLOR
-        case 1:
+        elif result == 0:
+            color = HIT_COLOR   
+        elif result == 1:
             color = DROWNED_COLOR
 
-    window[event].update(window[event],
-                         button_color=(color, color))
-    window[event].update('', disabled=True)
+        window[event].update(window[event],
+                            button_color=(color, color))
+        window[event].update('', disabled=True)
 
+def shotResponse(): 
+    # get shot response
+    risposta = comm.waitResponse()
+    splittedMsg = risposta.split(", ")
+    if(splittedMsg[0] == "RH"):
+        rispostaColpo = splittedMsg[1] #-1, 1 o 0 
+    return rispostaColpo
 
 def place_ship(ship, coordinate, direction: int):
     # Place a ship on the board

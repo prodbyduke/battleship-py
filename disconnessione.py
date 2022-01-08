@@ -12,5 +12,3 @@ def disconnect():
 
     # se invio il pacchetto devo aspettare la risposta 
     #packetReceiver.receiveConnection() # il metodo ancora non esiste però lo farò successivamente
-
-disconnect()

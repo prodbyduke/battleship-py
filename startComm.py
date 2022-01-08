@@ -16,6 +16,5 @@ def startComunication():
     else: 
         print("not success :(")
 
-startComunication()
 # quando invio il pacchetto aspetto la risposta per capire se vuole connettersi o no
 #packetReceiver.receiveConnection() # il metodo ancora non esiste però lo farò successivamente

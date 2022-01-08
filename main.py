@@ -34,6 +34,7 @@ main_layout = [[[sg.Text(data.player2.name)],
 # Instantiating the Window
 main_window = sg.Window(data.GAME_NAME, main_layout,
                         size=data.WINDOW_DEFAULT_SIZE, font=data.DEFAULT_FONT)
+data.busy = True #quando apro la main window vuol dire che sono in gioco e allora sono occupato
 # Main loop
 while True:
     event, values = main_window.read()

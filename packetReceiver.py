@@ -1,17 +1,16 @@
 import socket
 from packetSender import send
-localIP = "127.0.0.1" 
-localPort = 12345  
-bufferSize = 1024
+import data
+
 otherAdress = ("", 0)
 
 UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-UDPServerSocket.bind((localIP, localPort))
+UDPServerSocket.bind((data.LOCALIP, data.LISTENPORT))
 
 #metodo che aspetta un pacchetto per l'inizio della comunicazione 
 def waitPacket():
     print("Sono pronto a ricevere")
-    bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
+    bytesAddressPair = UDPServerSocket.recvfrom(data.BUFFERSIZE)
     message = bytesAddressPair[0] #nella prima parte ci sarà il mesaggio e nella seconda l'ip 
     formattedMsg = format(message)
     splittedMsg = formattedMsg.split(", ")
@@ -36,7 +35,7 @@ def waitPacket():
 def startListening():
     while True:
         print("Continuo la comunicazione")
-        bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
+        bytesAddressPair = UDPServerSocket.recvfrom(data.BUFFERSIZE)
         message = bytesAddressPair[0] 
         formattedMsg = format(message)
         splittedMsg = formattedMsg.split(", ")
@@ -45,7 +44,7 @@ def startListening():
 #questo metodo serve solo per aspettare una risposta singola (per esempio quando inizio la comunicazione)
 def listenJustOnce():
     print("Aspetto la risposta")
-    bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
+    bytesAddressPair = UDPServerSocket.recvfrom(data.BUFFERSIZE)
     message = bytesAddressPair[0] 
     formattedMsg = format(message)
     return formattedMsg 
