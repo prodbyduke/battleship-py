@@ -2,11 +2,12 @@
 from packetSender import send
 from packetReceiver import listenJustOnce
 from packetReceiver import startListening
+import data
 
 def startComunication():
-    msg = "NC, player1, 6969" #NC per la connessione, il nostro nome utente e la porta do0ve ascoltiamo così che l'altro possa salvarla
+    msg = "NC, playerX" #NC per la connessione, il nostro nome utente 
 
-    if send(msg, "127.0.0.1", 6969): #dobbiamo avere l'ip del destinatario e la porta su cui manderemo i messaggi
+    if send(msg, data.opponentIP, data.LISTENPORT): #dobbiamo avere l'ip del destinatario e la porta su cui manderemo i messaggi
         returnedMsg = listenJustOnce()
         splittedMsg = returnedMsg.split(", ")
         if(splittedMsg[0] == "RC"):
@@ -15,6 +16,15 @@ def startComunication():
         print("success")
     else: 
         print("not success :(")
+
+def answerStartComm(busy): #busy mi dirà se siamo occupati o pure no con un altro utente
+    msg = "RC, "
+    msg += str(busy)
+    msg += ", playerX"
+    if send(msg, data.opponentIP, data.LISTENPORT):
+        print("answer sent")
+        return True
+    return False
 
 # quando invio il pacchetto aspetto la risposta per capire se vuole connettersi o no
 #packetReceiver.receiveConnection() # il metodo ancora non esiste però lo farò successivamente

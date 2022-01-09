@@ -36,7 +36,8 @@ current_gamemode = "Idle"
 current_ship = None
 current_direction = 0
 occupied_points = []
-busy = False #variabile per capire se siamo già in gioco
+notBusy = True #variabile per capire se siamo occupati
+opponentIP = ""
 
 
 def connect(IP):
