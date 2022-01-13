@@ -1,6 +1,7 @@
 from packetSender import send
 #import packetReceiver
 
+#immagino che questa funzione sarà richiamata da un bottone 
 def disconnect():
     msg = "D, " #D per disconnettersi 
     msg += str(True)

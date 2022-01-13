@@ -8,14 +8,14 @@ def startComunication():
     msg = "NC, playerX" #NC per la connessione, il nostro nome utente 
 
     if send(msg, data.opponentIP, data.LISTENPORT): #dobbiamo avere l'ip del destinatario e la porta su cui manderemo i messaggi
-        returnedMsg = listenJustOnce()
-        splittedMsg = returnedMsg.split(", ")
-        if(splittedMsg[0] == "RC"):
-            if(splittedMsg[1] == "true"):
-                print("inizia la comunicazione")
         print("success")
     else: 
         print("not success :(")
+
+def receiveAnswer(risposta):
+    if(risposta == "True"): #ricevo una stringa quindi devo controllare la stringa e non il booleano
+        #chiamerà un metodo che farà iniziare il gioco 
+        print("inizia la comunicazione")
 
 def answerStartComm(busy): #busy mi dirà se siamo occupati o pure no con un altro utente
     msg = "RC, "

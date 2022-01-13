@@ -37,6 +37,7 @@ current_ship = None
 current_direction = 0
 occupied_points = []
 notBusy = True #variabile per capire se siamo occupati
+turn = 0 #il turno, se è 0 è avversario se è 1 è il nostro turno
 opponentIP = ""
 
 
@@ -44,12 +45,21 @@ def connect(IP):
     # Connecting with opponent
     return None
 
+def changeTurn():
+    #questo fa vedere graficamente di chi è il turno 
+    #portremmo fare che quando non è il nostro turno i bottoni per mandare l'attacco sono disabilitati
+    return 0 
 
+def shootResult(coordinate):
+    risultato = 2
+    #se le coordinate che ci hanno passato corrispondono a una nave allora manderemo 0, se la nave è stata affondata 1 se hanno missato -1
+    return risultato
+    
 def shoot(window: sg.Window, event):    
     # Send shot info to opponent    
     # -1: missed | 0: hit | 1: drowned
     if(comm.sendAttack("a-1")):
-        result = shotResponse() # Receive result from shotResponse()
+        result = shootResponse() # Receive result from shotResponse()
         if result == -1:
             color = MISSED_COLOR
         elif result == 0:
@@ -61,7 +71,7 @@ def shoot(window: sg.Window, event):
                             button_color=(color, color))
         window[event].update('', disabled=True)
 
-def shotResponse(): 
+def shootResponse(): 
     # get shot response
     risposta = comm.waitResponse()
     splittedMsg = risposta.split(", ")
@@ -134,6 +144,8 @@ def check_gamemode(window: sg.Window, event):
             window[event].update('Horizontal')
         return
 
+def closeGame():
+    return ""
 
 def disable_board(player: player):
     # Disable the specified board

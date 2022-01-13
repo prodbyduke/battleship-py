@@ -8,7 +8,7 @@ def sendAttack(cella):
     msg = "H," 
     msg += cella
 
-    if send(msg, data.opponentIP, data.LISTENPORT): #dobbiamo avere l'ip del destinatario e la porta su cui manderemo i messaggi
+    if send(msg, data.opponentIP, data.LISTENPORT): 
         print("success")
         return True
     else: 
