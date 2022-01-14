@@ -1,6 +1,4 @@
 import random
-from threading import currentThread
-from packetSender import send
 from player import player
 import PySimpleGUI as sg
 import numpy as np

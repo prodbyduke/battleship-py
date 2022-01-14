@@ -1,11 +1,13 @@
 # Imports
-import threading
 import data
 from player import player
 import PySimpleGUI as sg
-import numpy as np
+import numpy as nppip
 import ThreadWait 
 from threading import Thread
+from packetReceiver import creaSocket
+
+creaSocket()
 
 sg.theme('DarkPurple4')  # Choosing Theme
 # Setting pre_window layout
@@ -13,7 +15,7 @@ pre_layout = [[sg.Text('Username')], [sg.InputText()], [sg.Text("Opponent's IP")
               [sg.InputText()], [sg.Button('Play')]]
 
 #questo è il thread che aspetterà ogni pacchetto 
-tInfinite = threading.Thread(target= ThreadWait.RicezionePacchetti())
+tInfinite = Thread(target= ThreadWait.RicezionePacchetti())
 tInfinite.start()
 
 # Ask for name and opponent's IP

@@ -1,12 +1,10 @@
 # se vogliamo iniziare la comunicazione dovremmo mandare un pacchetto con "NC"
 from packetSender import send
 from packetReceiver import listenJustOnce
-from packetReceiver import startListening
 import data
 
 def startComunication():
     msg = "NC, playerX" #NC per la connessione, il nostro nome utente 
-
     if send(msg, data.opponentIP, data.LISTENPORT): #dobbiamo avere l'ip del destinatario e la porta su cui manderemo i messaggi
         print("success")
     else: 
