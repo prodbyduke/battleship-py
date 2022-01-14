@@ -1,6 +1,5 @@
 # se vogliamo iniziare la comunicazione dovremmo mandare un pacchetto con "NC"
 from packetSender import send
-from packetReceiver import listenJustOnce
 import data
 
 def startComunication():
@@ -12,7 +11,7 @@ def startComunication():
 
 def receiveAnswer(risposta):
     if(risposta == "True"): #ricevo una stringa quindi devo controllare la stringa e non il booleano
-        #chiamerà un metodo che farà iniziare il gioco 
+        data.opponentIP = data.tempIp
         print("inizia la comunicazione")
 
 def answerStartComm(busy): #busy mi dirà se siamo occupati o pure no con un altro utente

@@ -9,7 +9,6 @@ class player:
     def __init__(self, GRID_SIZE, n: int):
         self.name = ""
         self.score = 0
-        self.ip = ""
         self.board = [[
             sg.Button(ALPHABET[j] + str(i + 1), key=ALPHABET[j] + str(i + 1) + str(n), size=(4, 2),
                       pad=(0.1, 0.1), font='Verdana 9', disabled=True)

@@ -1,7 +1,6 @@
-import random
+import socket
 from player import player
 import PySimpleGUI as sg
-import numpy as np
 import comunicazione as comm
 
 
@@ -37,11 +36,13 @@ occupied_points = []
 notBusy = True #variabile per capire se siamo occupati
 turn = 0 #il turno, se è 0 è avversario se è 1 è il nostro turno
 opponentIP = ""
+UDPServerSocket = None
+tempIp = ""
 
-
-def connect(IP):
-    # Connecting with opponent
-    return None
+def creaSocket():
+    global UDPServerSocket
+    UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+    UDPServerSocket.bind((LOCALIP, LISTENPORT))
 
 def changeTurn():
     #questo fa vedere graficamente di chi è il turno 
