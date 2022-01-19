@@ -7,17 +7,20 @@ def main():
     sg.theme('DarkPurple4')  # Choosing Theme
     # Setting pre_window layout
     pre_layout = [[sg.Text('Username')], [sg.InputText()], [sg.Text("Opponent's IP")],
-                [sg.InputText()], [sg.Button('Play')]]
+                [sg.InputText()], [sg.Button('Play')], [sg.Button('Ready')]]
 
     # Ask for name and opponent's IP
     pre_window = sg.Window(data.GAME_NAME, pre_layout)
-    while True:
+    while data.notBusy == False:
         event, values = pre_window.read()
 
         if event == 'Play':  # User closes main_window
             data.player1.name = values[0]
             data.tempIp = values[1]
             print(data.tempIp)
+        if event == 'Ready': # User is ready to accept connection
+            data.player1.name = values[0]
+            data.notBusy = True
         if data.opponentIP == data.tempIp:
             break
     pre_window.close()

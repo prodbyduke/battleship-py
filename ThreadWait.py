@@ -13,7 +13,7 @@ def RicezionePacchetti():
         #questo switch controllerà la prima parte del paccheto e in base a quella richiamerà dei metodi
         if splittedMsg[0] == "NC":
             answerStartComm(data.notBusy) #devo inviare la risposta al destinatario, se sono occupato gli manderò false così possiamo connetterci
-            data.turn = 0;
+            data.turn = 0
         elif splittedMsg[0] == "H": 
             shootResult = data.shootResult(splittedMsg[1]) #invio al metodo le coordinate e mi aspetto che mi dia -1, 0 o 1
             chk = answerShoot(shootResult)

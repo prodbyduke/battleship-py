@@ -33,11 +33,12 @@ current_gamemode = "Idle"
 current_ship = None
 current_direction = 0
 occupied_points = []
-notBusy = True #variabile per capire se siamo occupati
+notBusy = False #variabile per capire se siamo occupati
 turn = 0 #il turno, se è 0 è avversario se è 1 è il nostro turno
 opponentIP = ""
 UDPServerSocket = None
 tempIp = ""
+
 
 def creaSocket():
     global UDPServerSocket
@@ -62,9 +63,11 @@ def shoot(window: sg.Window, event):
         if result == -1:
             color = MISSED_COLOR
         elif result == 0:
-            color = HIT_COLOR   
+            color = HIT_COLOR
+            player1.add_score(1)
         elif result == 1:
             color = DROWNED_COLOR
+            player1.add_score(5)
 
         window[event].update(window[event],
                             button_color=(color, color))
@@ -92,6 +95,11 @@ def place_ship(ship, coordinate, direction: int):
             occupied_points.append(player1.board[row + int(coordinate[1:(len(coordinate)) - 1]) - 1][ALPHABET.index(coordinate[0:1])].Key)
     return None
 
+def receive_shot(coords):
+    # Receive shot from opponent and respond
+    if coords in occupied_points:
+        result = 0
+    return
 
 def is_in_board(event):
     # Check if the pressed button is in a board
