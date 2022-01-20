@@ -36,7 +36,7 @@ occupied_points = []
 available = False #variabile per capire se siamo occupati
 ready = False # Connection established
 turn = 0 #il turno, se è 0 è avversario se è 1 è il nostro turno
-opponentIP = ""
+opponentIP = None
 UDPServerSocket = None
 tempIp = ""
 

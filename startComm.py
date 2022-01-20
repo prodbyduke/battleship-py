@@ -3,23 +3,23 @@ from packetSender import send
 import data
 
 def startComunication():
-    msg = "NC, playerX" #NC per la connessione, il nostro nome utente 
+    msg = "NC, " + data.player1.name #NC per la connessione, il nostro nome utente 
     if send(msg, data.opponentIP, data.LISTENPORT): #dobbiamo avere l'ip del destinatario e la porta su cui manderemo i messaggi
-        print("success")
+        print("Communication requested")
     else: 
-        print("not success :(")
+        print("Error")
 
 def receiveAnswer(risposta):
     if(risposta == "True"): #ricevo una stringa quindi devo controllare la stringa e non il booleano
         data.opponentIP = data.tempIp
-        print("inizia la comunicazione")
+        data.ready = True
+        print("Communication accepted")
 
 def answerStartComm(busy): #busy mi dirà se siamo occupati o pure no con un altro utente
     msg = "RC, "
-    msg += str(busy)
-    msg += ", playerX"
+    msg += str(busy) + ", " + data.player1.name
     if send(msg, data.opponentIP, data.LISTENPORT):
-        print("answer sent")
+        print("Replied")
         return True
     return False
 
