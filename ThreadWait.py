@@ -4,7 +4,7 @@ from comunicazione import answerShoot
 
 def RicezionePacchetti():
     data.creaSocket()
-    print("Sono pronto a ricevere")
+    print("Waiting for message...")
     while True :
         bytesAddressPair = data.UDPServerSocket.recvfrom(data.BUFFERSIZE)
         message = bytesAddressPair[0] #nella prima parte ci sarà il mesaggio e nella seconda l'ip 

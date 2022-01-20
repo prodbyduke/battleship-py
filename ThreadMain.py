@@ -1,7 +1,9 @@
 # Imports
+from tracemalloc import start
 import data
 import PySimpleGUI as sg
 import disconnessione
+import startComm
 
 def main():
     sg.theme('DarkPurple4')  # Choosing Theme
@@ -17,7 +19,8 @@ def main():
         if event == 'Play':  # User closes main_window
             data.player1.name = values[0]
             data.tempIp = values[1]
-            print(data.tempIp)
+            print("Connection requested to " + data.tempIp)
+            startComm.startComunication()
         if event == 'Ready': # User is ready to accept connection
             data.player1.name = values[0]
             data.available = True

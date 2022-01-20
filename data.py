@@ -16,7 +16,7 @@ DROWNED_COLOR = 'IndianRed4'
 SHIP_COLOR = 'DarkGreen'
 SENDPORT = 6969
 LISTENPORT = 12345
-LOCALIP = "127.0.0.1" 
+LOCALIP = "127.0.0.1"
 BUFFERSIZE = 1024
 
 SHIPS = {
@@ -33,9 +33,9 @@ current_gamemode = "Idle"
 current_ship = None
 current_direction = 0
 occupied_points = []
-available = False #variabile per capire se siamo occupati
-ready = False # Connection established
-turn = 0 #il turno, se è 0 è avversario se è 1 è il nostro turno
+available = False  # User is available for connection
+ready = False  # Connection established
+turn = 0  # Integer identifying the current turn: 0 - Opponent's turn / 1 - User's turn
 opponentIP = None
 UDPServerSocket = None
 tempIp = ""
@@ -43,24 +43,28 @@ tempIp = ""
 
 def creaSocket():
     global UDPServerSocket
-    UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+    UDPServerSocket = socket.socket(
+        family=socket.AF_INET, type=socket.SOCK_DGRAM)
     UDPServerSocket.bind((LOCALIP, LISTENPORT))
 
-def changeTurn():
-    #questo fa vedere graficamente di chi è il turno 
-    #portremmo fare che quando non è il nostro turno i bottoni per mandare l'attacco sono disabilitati
-    return 0 
 
-def shootResult(coordinate):
-    risultato = 2
-    #se le coordinate che ci hanno passato corrispondono a una nave allora manderemo 0, se la nave è stata affondata 1 se hanno missato -1
-    return risultato
-    
-def shoot(window: sg.Window, event):    
-    # Send shot info to opponent    
+def change_turn():
+    # Disables opponent's board depending on whose turn is the current
+    global turn
+    if(turn == 0):
+        turn = 1
+        disable_board(player2)
+    elif(turn == 1):
+        turn = 0
+        enable_board(player2)
+    return
+
+
+def shoot(window: sg.Window, event):
+    # Send shot info to opponent
     # -1: missed | 0: hit | 1: drowned
     if(comm.sendAttack(event)):
-        result = shootResponse() # Receive result from shotResponse()
+        result = shootResponse()  # Receive result from shotResponse()
         if result == -1:
             color = MISSED_COLOR
         elif result == 0:
@@ -71,16 +75,18 @@ def shoot(window: sg.Window, event):
             player1.add_score(5)
 
         window[event].update(window[event],
-                            button_color=(color, color))
+                             button_color=(color, color))
         window[event].update('', disabled=True)
 
-def shootResponse(): 
-    # get shot response
+
+def shootResponse():
+    # Get shot response
     risposta = comm.waitResponse()
     splittedMsg = risposta.split(", ")
     if(splittedMsg[0] == "RH"):
-        rispostaColpo = splittedMsg[1] #-1, 1 o 0 
+        rispostaColpo = splittedMsg[1]  # -1, 1 o 0
     return rispostaColpo
+
 
 def place_ship(ship, coordinate, direction: int):
     # Place a ship on the board
@@ -88,19 +94,27 @@ def place_ship(ship, coordinate, direction: int):
     length = SHIPS[ship]
     if(direction == 0):
         for column in range(length):
-            player1.board[int(coordinate[1:(len(coordinate)) - 1]) - 1][column + ALPHABET.index(coordinate[0:1])].update(button_color=(SHIP_COLOR, SHIP_COLOR))
-            occupied_points.append(player1.board[int(coordinate[1:(len(coordinate)) - 1]) - 1][column + ALPHABET.index(coordinate[0:1])].Key)
+            player1.board[int(coordinate[1:(len(coordinate)) - 1]) - 1][column + ALPHABET.index(
+                coordinate[0:1])].update(button_color=(SHIP_COLOR, SHIP_COLOR))
+            occupied_points.append(player1.board[int(coordinate[1:(
+                len(coordinate)) - 1]) - 1][column + ALPHABET.index(coordinate[0:1])].Key)
     elif(direction == 1):
         for row in range(length):
-            player1.board[row + int(coordinate[1:(len(coordinate)) - 1]) - 1][ALPHABET.index(coordinate[0:1])].update(button_color=(SHIP_COLOR, SHIP_COLOR))
-            occupied_points.append(player1.board[row + int(coordinate[1:(len(coordinate)) - 1]) - 1][ALPHABET.index(coordinate[0:1])].Key)
+            player1.board[row + int(coordinate[1:(len(coordinate)) - 1]) - 1][ALPHABET.index(
+                coordinate[0:1])].update(button_color=(SHIP_COLOR, SHIP_COLOR))
+            occupied_points.append(player1.board[row + int(
+                coordinate[1:(len(coordinate)) - 1]) - 1][ALPHABET.index(coordinate[0:1])].Key)
     return None
+
 
 def receive_shot(coords):
     # Receive shot from opponent and respond
     if coords in occupied_points:
         result = 0
+    else:
+        result = -1
     return
+
 
 def is_in_board(event):
     # Check if the pressed button is in a board
@@ -129,6 +143,7 @@ def check_gamemode(window: sg.Window, event):
     global current_gamemode, current_ship, current_direction, player1, player2
     if(get_event_type(event) == 'Board' and current_gamemode == "Shoot"):
         shoot(window, event)
+        change_turn()
         return
     elif(get_event_type(event) == 'Board' and current_gamemode == "Place"):
         place_ship(current_ship, event, current_direction)
@@ -152,8 +167,10 @@ def check_gamemode(window: sg.Window, event):
             window[event].update('Horizontal')
         return
 
+
 def closeGame():
     return ""
+
 
 def disable_board(player: player):
     # Disable the specified board

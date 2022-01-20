@@ -4,7 +4,7 @@ import data
 
 def startComunication():
     msg = "NC, " + data.player1.name #NC per la connessione, il nostro nome utente 
-    if send(msg, data.opponentIP, data.LISTENPORT): #dobbiamo avere l'ip del destinatario e la porta su cui manderemo i messaggi
+    if send(msg, data.tempIp, data.LISTENPORT): #dobbiamo avere l'ip del destinatario e la porta su cui manderemo i messaggi
         print("Communication requested")
     else: 
         print("Error")
@@ -14,6 +14,8 @@ def receiveAnswer(risposta):
         data.opponentIP = data.tempIp
         data.ready = True
         print("Communication accepted")
+    else:
+        print("Communication refused")
 
 def answerStartComm(busy): #busy mi dirà se siamo occupati o pure no con un altro utente
     msg = "RC, "
