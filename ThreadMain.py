@@ -11,7 +11,7 @@ def main():
 
     # Ask for name and opponent's IP
     pre_window = sg.Window(data.GAME_NAME, pre_layout)
-    while data.notBusy == False:
+    while data.ready == False:
         event, values = pre_window.read()
 
         if event == 'Play':  # User closes main_window
@@ -20,7 +20,7 @@ def main():
             print(data.tempIp)
         if event == 'Ready': # User is ready to accept connection
             data.player1.name = values[0]
-            data.notBusy = True
+            data.available = True
         if data.opponentIP == data.tempIp:
             break
     pre_window.close()

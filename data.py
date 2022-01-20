@@ -9,7 +9,7 @@ ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
 GAME_NAME = "Battleship"
 GRID_SIZE = 10
 DEFAULT_FONT = 'Verdana 9'
-WINDOW_DEFAULT_SIZE = (375, 950)
+WINDOW_DEFAULT_SIZE = (475, 950)
 MISSED_COLOR = 'grey'
 HIT_COLOR = 'IndianRed3'
 DROWNED_COLOR = 'IndianRed4'
@@ -33,7 +33,8 @@ current_gamemode = "Idle"
 current_ship = None
 current_direction = 0
 occupied_points = []
-notBusy = False #variabile per capire se siamo occupati
+available = False #variabile per capire se siamo occupati
+ready = False # Connection established
 turn = 0 #il turno, se è 0 è avversario se è 1 è il nostro turno
 opponentIP = ""
 UDPServerSocket = None
@@ -58,7 +59,7 @@ def shootResult(coordinate):
 def shoot(window: sg.Window, event):    
     # Send shot info to opponent    
     # -1: missed | 0: hit | 1: drowned
-    if(comm.sendAttack("a-1")):
+    if(comm.sendAttack(event)):
         result = shootResponse() # Receive result from shotResponse()
         if result == -1:
             color = MISSED_COLOR
