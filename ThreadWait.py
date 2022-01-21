@@ -1,15 +1,17 @@
 import data
 from startComm import answerStartComm, receiveAnswer
 from comunicazione import answerShoot
+import socket
 
 def RicezionePacchetti():
     data.creaSocket()
     print("Waiting for message...")
     while True :
-        bytesAddressPair = data.UDPServerSocket.recvfrom(data.BUFFERSIZE)
-        message = bytesAddressPair[0] #nella prima parte ci sarà il mesaggio e nella seconda l'ip 
-        formattedMsg = format(message)
+        message,indirizzo = data.UDPServerSocket.recvfrom(data.BUFFERSIZE)
+        formattedMsg = message.decode()
         splittedMsg = formattedMsg.split(", ")
+        data.opponentIP = indirizzo[0]
+        data.LISTENPORT = 6969
         #questo switch controllerà la prima parte del paccheto e in base a quella richiamerà dei metodi
         if splittedMsg[0] == "NC":
             answerStartComm(data.available) #devo inviare la risposta al destinatario, se sono occupato gli manderò false così possiamo connetterci

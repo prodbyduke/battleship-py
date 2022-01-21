@@ -5,7 +5,7 @@ def send(msg, ip, porta):
     # Creo la socket
     UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
     
-    bytesToSend = str.encode(msg)  # converto il mesaggio in byte
+    bytesToSend = msg.encode()  # converto il mesaggio in byte
     otherAdress = (ip, porta)
 
     # invio all'altro peer il messaggio
